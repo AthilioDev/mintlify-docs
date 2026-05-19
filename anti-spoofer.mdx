@@ -1,56 +1,87 @@
 ---
-title: "Anti-Spoofer"
-description: "Descrição do sistema de proteção por IP e banimento integrado da Athilio Software"
+title: "Athilio Shield Protection"
+description: "Athilio Shield Protection: sistema de licenciamento seguro e proteção avançada do Athilio_Spotify"
 icon: 'shield-check'
 ---
 
-# Anti-Spoofer
+# Athilio Shield Protection
 
-O Anti-Spoofer da Athilio Software é uma proteção integrada que funciona diretamente na infraestrutura do resource.
+Athilio Shield Protection é o sistema integrado de licenciamento seguro e proteção avançada do `Athilio_Spotify`. Ele combina validação de licença, autenticação por IP e gerenciamento de franquia de servidores.
 
 ## Como funciona
 
-- Gera uma assinatura criptográfica de rede baseada em hardware e blocos lógicos.
-- Detecta perfis nocivos em nível de infraestrutura.
-- Aplica banimento permanente para perfis comprometidos.
-- Permite revogações dinâmicas via nuvem.
+- Gera identificadores únicos a partir de informações de hardware, sessão e infraestrutura do servidor.
+- Detecta tentativas de evasão e reutilização indevida de licenças.
+- Aplica bloqueios automáticos em perfis comprometidos.
+- Permite revogação dinâmica e gestão de bloqueios pelo painel em nuvem.
 
-## Banimento por IP e proteção de servidor
+## Arquitetura do sistema
 
-- O sistema valida o IP autorizado no painel.
-- Qualquer servidor não autorizado é bloqueado imediatamente.
-- Mudança de VPS ou IP exige redefinição no painel.
-- Licenças usadas em múltiplos servidores são banidas.
+- Cliente FiveM → resource `Athilio_Spotify`
+- Resource Athilio → API de validação centralizada
+- API de validação → Dashboard em nuvem
+- Dashboard → gerenciamento de licenças, IP e franquias de servidores
 
-## Proteção avançada e franquia de servidores
+## Validação de licença com autenticação por IP
 
-Se um servidor que usa o script for banido, o dono pode vincular uma franquia de servidores.
+- O sistema valida o uso da licença junto ao IP autorizado no painel.
+- Servidores não autorizados são bloqueados automaticamente.
+- Mudança de VPS ou alteração de IP exige redefinição no painel.
+- O sistema monitora ativações simultâneas não autorizadas.
 
-Isso significa que:
+## Franquia de servidores e proteção distribuída
 
-- banimentos em um servidor podem se estender a toda a franquia
-- tentativas de spoofing com HWID, Steam, Discord, whitelist ou IP são detectadas
-- o sistema banirá o perfil em todos os servidores vinculados
-- o usuário não consegue retornar por meio desse script
+- O proprietário pode vincular uma franquia de servidores ao mesmo ecossistema.
+- Se um servidor for marcado ou bloqueado, a franquia inteira pode ser avaliada.
+- Tentativas de retorno utilizando spoofing ou alteração de identificadores são automaticamente bloqueadas.
+- O painel sincroniza uma blacklist distribuída entre servidores vinculados.
 
-### Tipos de ban detectados
+### Tipos de bloqueio detectados
 
 - HWID
 - Steam ID
 - Discord ID
 - whitelist (WL)
 - IP
-- assinaturas de rede e hardware
+- identificadores de sessão e hardware
 
 <Warning>
-  Se o usuário tentar mudar HWID, Steam, Discord, WL ou IP para voltar, o sistema bloqueia o acesso por esse script.
+  Se o usuário tentar alterar HWID, Steam, Discord, WL ou IP para voltar, o sistema bloqueia o acesso por esse script.
 </Warning>
 
-## Integração com painel admin
+## Integração com painel administrativo
 
 - O painel administra licenças, IPs autorizados e bloqueios.
-- Ele exibe status de validação e histórico de ativações.
-- A interface permite liberar ou revogar assinaturas diretamente na nuvem.
+- Exibe status de validação e histórico de ativações.
+- Permite revogar ou liberar acessos em tempo real.
+
+<Note>
+  O painel centralizado permite que o dono do servidor gerencie toda a franquia de servidores a partir de um local único.
+</Note>
+
+## Recursos
+
+- Sistema standalone de licenciamento
+- Dashboard cloud para gerenciamento
+- Autenticação por IP
+- Proteção contra spoofing e reutilização de licença
+- Controle de franquias de servidores
+- Blacklist distribuída sincronizada
+- Revogação remota de bloqueios
+
+## Capturas de tela
+
+![Dashboard Athilio Shield](/images/dashboard-placeholder.svg)
+
+![UI do Athilio_Spotify](/images/spotify-ui-placeholder.svg)
+
+![Validação de licença](/images/validation-placeholder.svg)
+
+![Painel administrador](/images/admin-panel-placeholder.svg)
+
+<Note>
+  Substitua essas imagens por capturas reais do Dashboard, interface do Spotify e painel administrativo sempre que possível.
+</Note>
 
 ## Versões
 
@@ -58,5 +89,5 @@ Isso significa que:
 - Versões mais antigas podem não possuir todas as funcionalidades do painel.
 
 <Note>
-  O Anti-Spoofer é parte do ecossistema Athilio e funciona em conjunto com a licença do Athilio_Spotify.
+  Athilio Shield Protection funciona em conjunto com a licença do Athilio_Spotify e é a camada de proteção recomendada para uso profissional.
 </Note>

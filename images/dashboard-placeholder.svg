@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" role="img" aria-label="Dashboard placeholder">
+  <rect width="800" height="450" fill="#1e8449"/>
+  <rect x="40" y="40" width="720" height="90" rx="16" fill="#27ae60" opacity="0.6"/>
+  <rect x="40" y="160" width="320" height="220" rx="16" fill="#ffffff" opacity="0.1"/>
+  <rect x="390" y="160" width="370" height="220" rx="16" fill="#ffffff" opacity="0.1"/>
+  <text x="60" y="100" font-family="Arial, sans-serif" font-size="32" fill="#fff">Athilio Dashboard</text>
+  <text x="60" y="200" font-family="Arial, sans-serif" font-size="20" fill="#fff">Validação de licença</text>
+  <text x="60" y="240" font-family="Arial, sans-serif" font-size="20" fill="#fff">Status de servidor</text>
+  <text x="410" y="200" font-family="Arial, sans-serif" font-size="20" fill="#fff">Painel Anti-Spoofer</text>
+</svg>
