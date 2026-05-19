@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Athilio Software Docs",
   "colors": {
-    "primary": "#1e8449",
-    "light": "#2ecc71",
-    "dark": "#145b36"
+    "primary": "#1e8526",
+    "light": "#5bcc2f",
+    "dark": "#1b5c14"
   },
   "favicon": "/favicon.svg",
   "navigation": {
