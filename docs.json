@@ -17,6 +17,8 @@
             "group": "Introdução",
             "pages": [
               "index",
+              "faq",
+              "changelog",
               "termos",
               "pagamentos",
               "contato"

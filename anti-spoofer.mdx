@@ -17,10 +17,10 @@ Athilio Shield Protection é o sistema integrado de licenciamento seguro e prote
 
 ## Arquitetura do sistema
 
-- Cliente FiveM → resource `Athilio_Spotify`
-- Resource Athilio → API de validação centralizada
-- API de validação → Dashboard em nuvem
-- Dashboard → gerenciamento de licenças, IP e franquias de servidores
+- Cliente FiveM → Athilio Spotify Resource
+- Athilio Spotify Resource → API de validação centralizada
+- API de validação → Dashboard Cloud
+- Dashboard Cloud → gerenciamento de licenças, IP e franquias de servidores
 
 ## Validação de licença com autenticação por IP
 
@@ -35,6 +35,15 @@ Athilio Shield Protection é o sistema integrado de licenciamento seguro e prote
 - Os servidores vinculados podem receber sincronização automática de bloqueios e validações.
 - Tentativas de retorno utilizando spoofing ou alteração de identificadores são automaticamente bloqueadas.
 - O painel sincroniza uma blacklist distribuída entre servidores vinculados.
+
+## Camadas de proteção
+
+- Validação de licença
+- Autenticação por IP
+- Verificação de sessão
+- Identificadores de hardware
+- Blacklist distribuída
+- Sincronização entre franquias
 
 ### Tipos de bloqueio detectados
 
@@ -71,13 +80,11 @@ Athilio Shield Protection é o sistema integrado de licenciamento seguro e prote
 
 ## Capturas de tela
 
-![Dashboard Athilio Shield](/images/dashboard-placeholder.svg)
+![Dashboard Athilio Shield](https://i.postimg.cc/DZ0qJyXg/image.png)
 
-![UI do Athilio Spotify](/images/spotify-ui-placeholder.svg)
+![Dashboard Configurações](https://i.postimg.cc/0yCW7jzv/image.png)
 
-![Validação de licença](/images/validation-placeholder.svg)
-
-![Painel administrador](/images/admin-panel-placeholder.svg)
+![Logs de validação de IP](https://i.postimg.cc/jjFhh7Km/image.png)
 
 <Note>
   Substitua essas imagens por capturas reais do Dashboard, interface do Spotify e painel administrativo sempre que possível.
