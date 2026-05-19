@@ -1,0 +1,144 @@
+---
+title: "Athilio_Spotify"
+description: "Documentação oficial do resource standalone de música para FiveM"
+icon: 'music'
+---
+
+# Athilio_Spotify
+
+Athilio_Spotify é um script standalone de música para servidores FiveM. Ele foi projetado para funcionar de forma independente e com compatibilidade ampla, mantendo a segurança da licença e a integridade do recurso.
+
+## O que é
+
+- Recurso standalone de música para FiveM
+- Compatível com bases customizadas, Creative, vRP, QBCore e ESX
+- Autenticação por licença para validação na inicialização
+- Interface NUI própria
+- Proteções contra uso não autorizado e spoofing
+
+## Licença
+
+O Athilio_Spotify utiliza uma licença oficial para validar o recurso durante a inicialização do servidor.
+
+### Arquivo de configuração
+
+A licença deve ser configurada no arquivo:
+
+`athilio_spotify/license.json`
+
+### Exemplo
+
+```json
+{
+  "license": "ATHILIO-XXXX-XXXX-XXXX"
+}
+```
+
+### Como configurar
+
+1. Acesse o painel da Athilio Software.
+2. Copie sua licença oficial.
+3. Abra `athilio_spotify/license.json`.
+4. Cole a licença no campo `license`.
+5. Salve o arquivo.
+6. Reinicie o servidor.
+
+<Warning>
+  Nunca compartilhe sua licença publicamente. Licenças compartilhadas são bloqueadas e não oferecem suporte.
+</Warning>
+
+### Formato correto do arquivo
+
+```json
+{
+  "license": "SUA_LICENSE_AQUI"
+}
+```
+
+### Verificação
+
+Após iniciar o servidor, confirme se o console exibe:
+
+`[Athilio Spotify] ✔ Licença validada com sucesso!`
+
+Se essa mensagem aparecer, a licença foi autenticada corretamente.
+
+## Estrutura do resource
+
+```txt
+resources/
+└── athilio_spotify/
+    ├── client.lua
+    ├── server.lua
+    ├── fxmanifest.lua
+    ├── license.json
+    ├── html/
+    │   ├── index.html
+    │   ├── style.css
+    │   ├── script.js
+    │   ├── jquery.js
+    │   └── logo.png
+    └── README.md
+```
+
+## Instalação
+
+1. Extraia `athilio_spotify` para a pasta `resources/`.
+2. Configure `athilio_spotify/license.json`.
+3. Adicione ao final do `server.cfg`:
+
+```cfg
+ensure athilio_spotify
+```
+
+4. Reinicie o servidor.
+
+<Tip>
+  Adicione `athilio_spotify` após as dependências do seu servidor para evitar problemas de carregamento.
+</Tip>
+
+## Erros comuns
+
+### Licença inválida
+
+Verifique:
+- licença copiada corretamente
+- não há espaços extras no arquivo
+- JSON válido
+- IP autorizado no painel
+
+### Arquivo inválido
+
+O arquivo deve permanecer no formato exato:
+
+```json
+{
+  "license": "SUA_LICENSE_AQUI"
+}
+```
+
+### Recurso não inicia
+
+Verifique:
+- `ensure athilio_spotify` no `server.cfg`
+- nome da pasta `athilio_spotify`
+- dependências carregadas antes do recurso
+- cache do FiveM limpo
+
+### Interface não abre
+
+Verifique:
+- pasta `html/` presente
+- arquivos `index.html`, `style.css`, `script.js`
+- erros no console `F8`
+
+## Recomendações
+
+- Use artefacts FiveM atualizados
+- Mantenha `oxmysql` em versão compatível
+- Evite renomear arquivos internos
+- Faça backup do servidor antes de instalar novos recursos
+
+<Check>
+  Documentação criada para ajudar na instalação, configuração e solução de problemas do Athilio_Spotify.
+</Check>
