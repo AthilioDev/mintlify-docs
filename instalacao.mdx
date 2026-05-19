@@ -4,26 +4,227 @@ description: "Passo a passo para instalar o resource Athilio Spotify"
 icon: 'download'
 ---
 
-## Instalação do Athilio Spotify
+---
+title: "Instalação — AthilioFy"
+description: "Guia técnico para instalar e configurar o AthilioFy (resource athilio_spotify) em produção"
+icon: 'download'
+---
 
-1. Extraia `athilio_spotify` para `resources/`
-2. Confirme que a pasta esteja nomeada `athilio_spotify`
-3. Adicione a linha abaixo no `server.cfg`:
+## Instalação — AthilioFy
+
+Visão rápida: este guia descreve o procedimento completo para instalar o resource `athilio_spotify` (nome comercial: AthilioFy), configurar a licença, preparar o banco de dados e instalar o bot de integração (Discord/FiveM). Siga os passos em ordem e teste em ambiente staging antes de produção.
+
+> Warning
+> Não compartilhe seu token ou licença; trate-os como credenciais sensíveis.
+
+### Requisitos mínimos
+
+- Sistema: Linux (Ubuntu 20.04+ recomendado) ou equivalente
+- Node.js: 16.x ou superior (para bot / painel se aplicável)
+- MySQL/MariaDB: 5.7+ / 10.x+
+- FiveM server
+- `git`, `curl`, `build-essential`
+- `pm2` (opcional) ou `systemd` para executar o bot como serviço
+
+### Preparar o servidor (VPS)
+
+1. Atualize pacotes:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y git curl build-essential
+```
+
+2. Instale Node.js (ex.: NodeSource):
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+```
+
+3. Instale cliente MySQL (opcional para testes):
+
+```bash
+sudo apt install -y mysql-client
+```
+
+4. Crie um usuário no sistema para rodar o bot (opcional):
+
+```bash
+sudo useradd -m -s /bin/bash athilio
+sudo mkdir -p /opt/athilio-bot
+sudo chown athilio:athilio /opt/athilio-bot
+```
+
+### Deploy do resource no FiveM
+
+1. No servidor FiveM (VPS que roda o servidor FiveM), copie a pasta do resource para `resources/`:
+
+```bash
+scp -r athilio_spotify user@fivem-server:/path/to/resources/
+```
+
+2. Verifique a estrutura (deve existir `fxmanifest.lua`):
+
+```bash
+ls resources/athilio_spotify
+```
+
+3. Adicione ao `server.cfg` do FiveM:
 
 ```cfg
 ensure athilio_spotify
 ```
 
-4. Reinicie o servidor.
+4. Reinicie o servidor FiveM e monitore o console do servidor por mensagens de inicialização do resource.
 
-<Tip>
-  Coloque `ensure athilio_spotify` após as dependências para evitar carregamento prematuro.
-</Tip>
+### Configurar a licença
 
-## Notas
+1. No Dashboard, copie a licença ativa.
+2. No servidor, abra `athilio_spotify/license.json` e cole a licença:
 
-- Se o Dashboard estiver disponível, prefira configurar pelo Dashboard; caso contrário, use `config.lua` conforme a versão do resource.
-- Faça backup antes de editar `config.lua`.
+```json
+{
+  "license": "ATHILIO-XXXX-XXXX-XXXX"
+}
+```
+
+<Warning>
+  Não compartilhe sua licença publicamente. Uso indevido pode resultar em bloqueio.
+</Warning>
+
+### Banco de dados (MySQL)
+
+1. Crie banco e usuário (exemplo):
+
+```sql
+CREATE DATABASE athilio_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'athilio_user'@'%' IDENTIFIED BY '<STRONG_PASSWORD>';
+GRANT ALL PRIVILEGES ON athilio_db.* TO 'athilio_user'@'%';
+FLUSH PRIVILEGES;
+```
+
+2. Atualize as credenciais no `config` do bot ou no Dashboard (recomendado):
+
+```env
+DB_HOST=127.0.0.1
+DB_USER=athilio_user
+DB_PASSWORD=<STRONG_PASSWORD>
+DB_NAME=athilio_db
+DB_PORT=3306
+```
+
+3. Certifique-se de que o usuário do banco tem permissão para alterar registros usados pelo resource (whitelist, tickets, etc.).
+
+### Instalar e configurar o bot (Discord integration)
+
+1. Clone ou copie o repositório do bot para `/opt/athilio-bot` e instale dependências:
+
+```bash
+cd /opt/athilio-bot
+npm ci
+```
+
+2. Configure variáveis de ambiente (exemplo `.env` ou systemd env):
+
+```bash
+export ATHILIO_BOT_TOKEN="<YOUR_DISCORD_BOT_TOKEN>"
+export DB_HOST="<DB_HOST>"
+export DB_USER="<DB_USER>"
+export DB_PASSWORD="<DB_PASSWORD>"
+export DB_NAME="<DB_NAME>"
+```
+
+3. Iniciar com `pm2` (recomendado para Node em produção):
+
+```bash
+npm run build   # se aplicável
+pm2 start dist/index.js --name athilio-bot --env production
+pm2 save
+```
+
+4. Ou configurar `systemd` (exemplo):
+
+```ini
+[Unit]
+Description=AthilioFy Bot
+After=network.target
+
+[Service]
+User=athilio
+Environment=ATHILIO_BOT_TOKEN=%ATHILIO_BOT_TOKEN%
+Environment=DB_HOST=%DB_HOST%
+WorkingDirectory=/opt/athilio-bot
+ExecStart=/usr/bin/node dist/index.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+5. Ative e inicie o serviço:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable athilio-bot
+sudo systemctl start athilio-bot
+sudo journalctl -u athilio-bot -f
+```
+
+<Warning>
+  NÃO FORNEÇA O TOKEN DO BOT EM CANAIS PÚBLICOS.
+</Warning>
+
+### Rede e Firewall
+
+- Abra a porta do FiveM (`30120` por padrão) no firewall e garanta NAT/port-forward se necessário.
+- Se o Dashboard estiver rodando localmente, exponha via proxy (Nginx) com TLS.
+
+Exemplo Nginx proxy para Dashboard:
+
+```nginx
+server {
+  listen 80;
+  server_name dashboard.example.com;
+  location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+  }
+}
+```
+
+### Verificação pós-instalação
+
+- No console do FiveM verifique mensagens de inicialização: `✔ Licença validada com sucesso`.
+- Verifique logs do bot: `pm2 logs athilio-bot` ou `journalctl -u athilio-bot`.
+- Teste o fluxo de verificação (captcha) em um usuário de teste.
+
+### Troubleshooting (erros comuns)
+
+- `Invalid license` → confirme `license.json` e o registro no Dashboard.
+- `ECONNREFUSED` ao conectar ao MySQL → verifique host/porta/credenciais e firewall.
+- `Invalid token` no bot → gere novo token no portal do Discord e atualize variáveis de ambiente.
+- `Missing intents` → habilite Gateway Intents no portal do Discord (presença/membros se necessário).
+
+### Rollback e backups
+
+- Faça snapshot do banco antes de atualizações críticas.
+- Versione alterações de `config` e mantenha um `config.previous.json` para rollback.
+
+### Checklist final
+
+- [ ] `license.json` preenchido e válido
+- [ ] DB criado e acessível (`athilio_db`)
+- [ ] Bot rodando e com token seguro
+- [ ] `server.cfg` contém `ensure athilio_spotify`
+- [ ] Firewall configurado (porta 30120 aberta)
+- [ ] Backups configurados
+
+## Suporte
+
+Se necessário, abra ticket no Discord: [discord.gg/Athilio](https://discord.gg/Athilio)
+
 
 ## Instalação do BOT (serviço de integração Discord/FiveM)
 
