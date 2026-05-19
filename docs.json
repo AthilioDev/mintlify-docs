@@ -39,6 +39,18 @@
           }
         ]
       }
+      ,
+      {
+        "tab": "Sistemas FiveM",
+        "groups": [
+          {
+            "group": "Bots",
+            "pages": [
+              "sistemas-fivem/bot-fivem"
+            ]
+          }
+        ]
+      }
     ],
     "global": {
       "anchors": [
