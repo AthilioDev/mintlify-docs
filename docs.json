@@ -17,6 +17,7 @@
             "group": "Introdução",
             "pages": [
               "index",
+              "status",
               "faq",
               "changelog",
               "termos",
