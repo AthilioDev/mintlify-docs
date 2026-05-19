@@ -1,32 +1,58 @@
 ---
 title: "Athilio_Spotify"
-description: "Documentação oficial do resource standalone de música para FiveM"
+description: "Documentação oficial do Athilio_Spotify: instalação, licença, dashboard e proteção"
 icon: 'music'
 ---
 
 # Athilio_Spotify
 
-Athilio_Spotify é um script standalone de música para servidores FiveM. Ele foi projetado para funcionar de forma independente e com compatibilidade ampla, mantendo a segurança da licença e a integridade do recurso.
+Athilio_Spotify é o resource standalone de música para servidores FiveM da Athilio Software. Ele oferece:
 
-## O que é
+- painel Dashboard para controle de configurações
+- validação de licença segura
+- proteção por IP e bloqueio automático
+- compatibilidade com bases customizadas e frameworks populares
 
-- Recurso standalone de música para FiveM
-- Compatível com bases customizadas, Creative, vRP, QBCore e ESX
-- Autenticação por licença para validação na inicialização
-- Interface NUI própria
-- Proteções contra uso não autorizado e spoofing
+<Info>
+  Nesta documentação você encontra as etapas de instalação, configuração de licença, uso do painel e detalhes de compatibilidade por versão.
+</Info>
+
+## Primeira instalação
+
+### Requisitos
+
+- FiveM atualizado
+- pasta `resources/` acessível no servidor
+- `oxmysql` instalado quando aplicável
+- licença ativa no painel Athilio
+
+### Instalação do resource
+
+1. Extraia `athilio_spotify` para a pasta `resources/`.
+2. Confirme que a pasta está nomeada exatamente como `athilio_spotify`.
+3. Adicione ao final do `server.cfg`:
+
+```cfg
+ensure athilio_spotify
+```
+
+4. Reinicie o servidor.
+
+<Tip>
+  Configure o `ensure athilio_spotify` após as dependências do servidor para evitar carregamento prematuro.
+</Tip>
 
 ## Licença
 
-O Athilio_Spotify utiliza uma licença oficial para validar o recurso durante a inicialização do servidor.
+O Athilio_Spotify usa autenticação de licença para validar o resource durante a inicialização.
 
-### Arquivo de configuração
+### Arquivo de licença
 
-A licença deve ser configurada no arquivo:
+A licença deve ser configurada em:
 
 `athilio_spotify/license.json`
 
-### Exemplo
+### Exemplo de arquivo
 
 ```json
 {
@@ -44,24 +70,82 @@ A licença deve ser configurada no arquivo:
 6. Reinicie o servidor.
 
 <Warning>
-  Nunca compartilhe sua licença publicamente. Licenças compartilhadas são bloqueadas e não oferecem suporte.
+  Nunca compartilhe sua licença publicamente. Compartilhamento, revenda ou uso em múltiplos servidores causa bloqueio automático.
 </Warning>
-
-### Formato correto do arquivo
-
-```json
-{
-  "license": "SUA_LICENSE_AQUI"
-}
-```
 
 ### Verificação
 
-Após iniciar o servidor, confirme se o console exibe:
+Após a inicialização do servidor, verifique o console por esta mensagem:
 
 `[Athilio Spotify] ✔ Licença validada com sucesso!`
 
 Se essa mensagem aparecer, a licença foi autenticada corretamente.
+
+## Configuração por versão
+
+### Versão 1.0.2
+
+Se você estiver usando a versão `1.0.2`, a configuração do programa é feita via `config.lua`.
+
+```lua
+Config = {}
+ 
+-- ============================================================
+-- 🔑 LICENÇA — Coloque sua chave aqui
+-- Compre/renove: Athilio.com.br | discord.gg/Athilio
+-- ============================================================
+Config.License = ""
+ 
+Config.ServerName = "Core Studios Fy"
+ 
+Config.HexColor = "27ae60"
+Config.Logo = ""
+ 
+Config.YoutubeAPIKey = ""
+ 
+-- Comando para abrir o painel
+Config.Command = ""
+ 
+-- Volume padrão (0 a 100)
+Config.DefaultVolume = 50
+ 
+Config.PropModel    = ""
+Config.PropFallback = ""
+ 
+-- Animação
+Config.EnableAnimation = true
+Config.AnimDict = ""
+Config.AnimName = ""
+ 
+-- Bone da mão direita
+Config.PropBone      = 57005
+Config.PropPlacement = {0.26, -0.12, -0.10, 80.0, -160.0, 180.0}
+```
+
+<Note>
+  Na versão 1.0.2, a personalização é feita diretamente no arquivo `config.lua`. Faça backup antes de editar.
+</Note>
+
+### Versões acima de 1.0.2
+
+Para versões mais recentes, todas as configurações podem ser feitas diretamente no Dashboard da Athilio Software.
+
+<Info>
+  Se você atualizar para uma versão mais nova, verifique o painel para migrar as configurações e confirmar que o resource está habilitado corretamente.
+</Info>
+
+## Dashboard
+
+O Dashboard é o local central para:
+
+- gerenciar licença e IP autorizado
+- ajustar configurações do recurso
+- atualizar informações do servidor
+- visualizar histórico de validações
+
+<Warning>
+  A configuração do Dashboard só está disponível em versões recentes. Se a sua versão não mostrar a aba de configurações, use `config.lua` conforme a versão 1.0.2.
+</Warning>
 
 ## Estrutura do resource
 
@@ -72,6 +156,7 @@ resources/
     ├── server.lua
     ├── fxmanifest.lua
     ├── license.json
+    ├── config.lua
     ├── html/
     │   ├── index.html
     │   ├── style.css
@@ -81,35 +166,31 @@ resources/
     └── README.md
 ```
 
-## Instalação
+## Bloqueio por IP
 
-1. Extraia `athilio_spotify` para a pasta `resources/`.
-2. Configure `athilio_spotify/license.json`.
-3. Adicione ao final do `server.cfg`:
+O sistema valida o IP do servidor no momento da ativação.
 
-```cfg
-ensure athilio_spotify
-```
+- IP autorizado deve estar correto no painel.
+- Migração de VPS ou mudança de IP exige redefinição.
+- Uso em múltiplos servidores sem autorização aciona bloqueio.
 
-4. Reinicie o servidor.
+<Warning>
+  Licenças usadas em mais de um servidor são bloqueadas automaticamente. Sempre use uma licença por servidor.
+</Warning>
 
-<Tip>
-  Adicione `athilio_spotify` após as dependências do seu servidor para evitar problemas de carregamento.
-</Tip>
-
-## Erros comuns
+## Problemas comuns
 
 ### Licença inválida
 
 Verifique:
 - licença copiada corretamente
-- não há espaços extras no arquivo
-- JSON válido
+- espaços extras no arquivo
+- JSON formatado corretamente
 - IP autorizado no painel
 
 ### Arquivo inválido
 
-O arquivo deve permanecer no formato exato:
+O arquivo deve permanecer exatamente no formato:
 
 ```json
 {
@@ -132,13 +213,15 @@ Verifique:
 - arquivos `index.html`, `style.css`, `script.js`
 - erros no console `F8`
 
-## Recomendações
+## Suporte e contato
 
-- Use artefacts FiveM atualizados
-- Mantenha `oxmysql` em versão compatível
-- Evite renomear arquivos internos
-- Faça backup do servidor antes de instalar novos recursos
+- Discord oficial: [discord.gg/Athilio](https://discord.gg/Athilio)
+- Site oficial: [athilio.com.br](https://athilio.com.br)
 
-<Check>
-  Documentação criada para ajudar na instalação, configuração e solução de problemas do Athilio_Spotify.
-</Check>
+<Tip>
+  Abra um ticket no Discord para validar sua licença ou solicitar suporte de instalação.
+</Tip>
+
+<Note>
+  Cada licença é vinculada ao servidor. Revenda, compartilhamento ou uso não autorizado leva ao bloqueio da licença.
+</Note>
