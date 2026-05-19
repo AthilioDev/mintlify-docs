@@ -10,26 +10,26 @@ Bem-vindo à documentação oficial da **Athilio Software**.
 
 <Columns cols={2}>
   <Column>
-    ## Athilio Spotify
+    ## Visão geral
 
-    Athilio Spotify é o sistema standalone de música para FiveM com gerenciamento de licença, Dashboard Cloud e proteção integrada.
+    `athilio_spotify` é o resource de música para FiveM com licença, validação centralizada e painel de gerenciamento.
 
     <Info>
-      Esta documentação foi preparada para clientes Athilio. Aqui você encontra guia de instalação, licença, painel e proteção.
+      Nesta documentação você encontra instruções técnicas de instalação, licença, Dashboard Cloud e proteção.
     </Info>
 
     <CardGroup cols={2}>
+      <Card title="Instalação" icon="download">
+        Guia rápido para adicionar `athilio_spotify` ao servidor.
+      </Card>
       <Card title="Dashboard Cloud" icon="chart-bar">
-        Gerencie licenças, IPs e franquias de servidores em um painel central.
+        Administrar licença, IP e bloqueios a partir de um painel central.
       </Card>
-      <Card title="Athilio Shield Protection" icon="shield-check">
-        Monitore spoofing, HWID, Discord, Steam e IPs com bloqueio sincronizado.
+      <Card title="Licenciamento" icon="key">
+        Validação de uso único com vínculo a um servidor autorizado.
       </Card>
-      <Card title="Licenciamento seguro" icon="key">
-        Validação por licença com autenticação por IP e uso único.
-      </Card>
-      <Card title="UI premium" icon="desktop-computer">
-        Interface responsiva com customização visual e controles de volume.
+      <Card title="Proteção" icon="shield-check">
+        Regras de detecção de spoofing, IP e uso não autorizado.
       </Card>
     </CardGroup>
   </Column>
@@ -38,89 +38,37 @@ Bem-vindo à documentação oficial da **Athilio Software**.
   </Column>
 </Columns>
 
-## O que você encontra aqui
+## Conteúdo principal
 
-- Instalação e configuração do `athilio_spotify`
-- Validação e logs da licença
-- Dashboard Cloud para gerenciamento
-- Sistema Athilio Shield Protection
-- FAQ e troubleshooting
-- Atualizações e changelog
-
-## Recursos
-
-- Dashboard Cloud
-- Athilio Shield Protection
-- Validação por IP
-- Licenciamento seguro
-- Configuração remota
-- UI personalizada
-- Integração com frameworks
-- Atualizações centralizadas
-- Sistema standalone
-
-## O que você construiu aqui
-
-- Um produto digital completo para FiveM
-- Documentação profissional
-- Billing e licença segura
-- Suporte via Discord oficial
-- Proteção anti spoofing integrada
-- Atualizações contínuas e changelog
-- Onboarding para servidores e franquias
+- Instalação e configuração de `athilio_spotify`
+- Registro da licença e validação
+- Uso do Dashboard Cloud
+- Regras de proteção e bloqueios
+- FAQ técnico
+- Histórico de versões e termos
 
 ## Arquitetura do sistema
 
 - Cliente FiveM → resource `athilio_spotify`
-- Athilio Spotify Resource → API de validação
+- `athilio_spotify` → API de validação centralizada
 - API de validação → Dashboard Cloud
-- Dashboard Cloud → gerenciamento de licenças e bloqueios
-
-## Showcase
-
-![Dashboard Athilio Spotify](https://i.postimg.cc/DZ0qJyXg/image.png)
-
-<Columns cols={3}>
-  <Column>
-    ![Configurações do Dashboard](https://i.postimg.cc/0yCW7jzv/image.png)
-  </Column>
-  <Column>
-    ![Logs do IP e validação](https://i.postimg.cc/jjFhh7Km/image.png)
-  </Column>
-  <Column>
-    ![UI do Athilio Spotify](https://i.postimg.cc/DZ0qJyXg/image.png)
-  </Column>
-</Columns>
+- Dashboard Cloud → gerenciamento de licença, IP e bloqueios
 
 ## Comece por aqui
 
-- [Termos e condições](/termos)
-- [Formas de pagamento](/pagamentos)
-- [Contato e suporte](/contato)
-- [Athilio Spotify](/athilio_spotify)
-- [Athilio Shield Protection](/anti-spoofer)
+- [Instalação e uso](/athilio_spotify)
+- [Proteção e bloqueios](/anti-spoofer)
+- [FAQ](/faq)
+- [Status do sistema](/status)
+- [Termos](/termos)
+- [Changelog](/changelog)
 
-<Note>
-  Cada licença do Athilio Spotify só pode ser utilizada em um único servidor. O sistema monitora ativações simultâneas não autorizadas.
-</Note>
+<Warning>
+  O resource `athilio_spotify` precisa estar na pasta `resources/` com nome exato `athilio_spotify`.
+</Warning>
 
-## Contato rápido
+## Contato
 
 - Discord oficial: [discord.gg/Athilio](https://discord.gg/Athilio)
 - Site oficial: [athilio.com.br](https://athilio.com.br)
-
-<Warning>
-  A configuração de versão 1.0.2 ainda depende de `config.lua`. Versões mais recentes utilizam o Dashboard para gerenciamento completo.
-</Warning>
-
-<Note>
-  O log real de validação do resource deve aparecer como:
-  `[Athilio Spotify] ✔ Licença validada com sucesso!`
-</Note>
-
-## Suporte Athilio
-
-- Discord: `discord.gg/Athilio`
-- X/Twitter: `@Athilio`
-- Website: `athilio.com.br`
 

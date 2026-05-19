@@ -1,84 +1,77 @@
 ---
 title: "Athilio Shield Protection"
-description: "Athilio Shield Protection: sistema de licenciamento seguro e proteção avançada do Athilio Spotify"
+description: "Athilio Shield Protection: camada de proteção para o resource athilio_spotify"
 icon: 'shield-check'
 ---
 
 # Athilio Shield Protection
 
-Athilio Shield Protection é o sistema integrado de licenciamento seguro e proteção avançada do Athilio Spotify. Ele combina validação de licença, autenticação por IP e gerenciamento de franquia de servidores.
+Athilio Shield Protection é a camada de proteção que complementa o resource `athilio_spotify` com regras de validação adicionais.
 
 ## Como funciona
 
-- Gera identificadores únicos a partir de informações de hardware, sessão e infraestrutura do servidor.
-- Detecta tentativas de evasão e reutilização indevida de licenças.
-- Aplica bloqueios automáticos em perfis comprometidos.
-- Permite revogação dinâmica e gestão de bloqueios pelo painel em nuvem.
+- Coleta identificadores de sessão, IP e hardware quando o resource tenta validar.
+- Compara os dados com o registro autorizado no painel.
+- Detecta alterações comuns de identificadores e aplica ações de bloqueio ou alerta configuráveis.
+- Permite revogação e controle de acesso a partir do painel.
 
 ## Arquitetura do sistema
 
-- Cliente FiveM → Athilio Spotify Resource
-- Athilio Spotify Resource → API de validação centralizada
+- Cliente FiveM → resource `athilio_spotify`
+- `athilio_spotify` → API de validação centralizada
 - API de validação → Dashboard Cloud
-- Dashboard Cloud → gerenciamento de licenças, IP e franquias de servidores
+- Dashboard Cloud → gerenciamento de licença, IP e bloqueios
 
-## Validação de licença com autenticação por IP
+## Validação de licença e IP
 
-- O sistema valida o uso da licença junto ao IP autorizado no painel.
-- Servidores não autorizados são bloqueados automaticamente.
-- Mudança de VPS ou alteração de IP exige redefinição no painel.
-- O sistema monitora ativações simultâneas não autorizadas.
+- O resource valida a licença com base no registro do painel.
+- O IP autorizado deve corresponder ao servidor em produção.
+- Mudança de VPS ou alteração de IP exige atualização no painel.
+- O sistema monitora tentativas de uso simultâneo em múltiplos servidores.
 
-## Franquia de servidores e proteção distribuída
+## Proteção de franquias
 
-- O proprietário pode vincular uma franquia de servidores ao mesmo ecossistema.
-- Os servidores vinculados podem receber sincronização automática de bloqueios e validações.
-- Tentativas de retorno utilizando spoofing ou alteração de identificadores são automaticamente bloqueadas.
-- O painel sincroniza uma blacklist distribuída entre servidores vinculados.
+- O proprietário pode vincular servidores a uma franquia administrada.
+- Servidores vinculados compartilham regras de bloqueio e status de validação.
+- A blacklist distribuída auxilia na propagação de bloqueios entre servidores autorizados.
+- Alterações de identificadores não autorizadas podem ser bloqueadas de acordo com regras configuradas.
+
+## Limitações
+
+- A proteção baseia-se em regras de licença e identificadores, não em detecção antifraude perfeita.
+- Mudanças legítimas de hardware ou IP devem ser atualizadas no painel.
+- A proteção ajuda a reduzir uso indevido, mas não substitui auditoria de servidor.
 
 ## Camadas de proteção
 
 - Validação de licença
 - Autenticação por IP
 - Verificação de sessão
-- Identificadores de hardware
+- Identificadores de hardware e de sessão
 - Blacklist distribuída
 - Sincronização entre franquias
 
-### Tipos de bloqueio detectados
-
-- HWID
-- Steam ID
-- Discord ID
-- whitelist (WL)
-- IP
-- identificadores de sessão e hardware
-
-<Warning>
-  Se o usuário tentar alterar HWID, Steam, Discord, WL ou IP para voltar, o acesso ao ecossistema Athilio é automaticamente bloqueado.
-</Warning>
-
-## Integração com painel administrativo
+## Integração com o painel
 
 - O painel administra licenças, IPs autorizados e bloqueios.
 - Exibe status de validação e histórico de ativações.
 - Permite revogar ou liberar acessos em tempo real.
 
 <Note>
-  O painel centralizado permite que o dono do servidor gerencie toda a franquia de servidores a partir de um local único.
+  O painel centralizado permite gerenciar toda a franquia de servidores de um único local.
 </Note>
 
 ## Recursos
 
-- Sistema standalone de licenciamento
+- Camada de proteção para `athilio_spotify`
 - Dashboard Cloud para gerenciamento
 - Autenticação por IP
-- Proteção contra spoofing e reutilização de licença
+- Detecção de alterações comuns de identificadores
 - Controle de franquias de servidores
 - Blacklist distribuída sincronizada
-- Revogação remota de bloqueios
+- Revogação remota de acessos
 
-## Capturas de tela
+## Imagens
 
 ![Dashboard Athilio Shield](https://i.postimg.cc/DZ0qJyXg/image.png)
 
@@ -87,14 +80,14 @@ Athilio Shield Protection é o sistema integrado de licenciamento seguro e prote
 ![Logs de validação de IP](https://i.postimg.cc/jjFhh7Km/image.png)
 
 <Note>
-  Substitua essas imagens por capturas reais do Dashboard, interface do Spotify e painel administrativo sempre que possível.
+  Substitua essas imagens por capturas reais do Dashboard sempre que possível.
 </Note>
 
 ## Versões
 
 - A proteção integrada está disponível para versões acima de `1.0.2`.
-- Versões mais antigas podem não possuir todas as funcionalidades do painel.
+- Versões mais antigas podem não ter todas as funcionalidades do painel.
 
 <Note>
-  Athilio Shield Protection funciona em conjunto com a licença do Athilio Spotify e é a camada de proteção recomendada para uso profissional.
+  Athilio Shield Protection funciona em conjunto com a licença do `athilio_spotify`.
 </Note>

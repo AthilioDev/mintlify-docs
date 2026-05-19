@@ -6,30 +6,24 @@ icon: 'music'
 
 # Athilio Spotify
 
-Athilio Spotify é o resource standalone de música para servidores FiveM da Athilio Software. Ele oferece:
-
-- painel Dashboard para controle de configurações
-- sistema de validação de licença com autenticação por IP
-- compatibilidade com bases customizadas e frameworks populares
+`athilio_spotify` é o resource de música para FiveM que utiliza licença e painel centralizado para validação e configuração.
 
 <Info>
-  Nesta documentação você encontra as etapas de instalação, configuração de licença, uso do painel e detalhes de compatibilidade por versão.
+  Este guia cobre instalação, licença, Dashboard Cloud e problemas de implantação.
 </Info>
 
-## Primeira instalação
-
-### Requisitos
+## Requisitos
 
 - FiveM atualizado
-- pasta `resources/` acessível no servidor
-- `oxmysql` instalado quando aplicável
+- pasta `resources/` disponível no servidor
+- `oxmysql` instalado quando necessário
 - licença ativa no painel Athilio
 
-### Instalação do resource
+## Instalação
 
-1. Extraia `athilio_spotify` para a pasta `resources/`.
-2. Confirme que a pasta está nomeada exatamente como `athilio_spotify`.
-3. Adicione ao final do `server.cfg`:
+1. Extraia `athilio_spotify` para `resources/`
+2. Confirme que a pasta está nomeada `athilio_spotify`
+3. Adicione no `server.cfg`:
 
 ```cfg
 ensure athilio_spotify
@@ -38,20 +32,14 @@ ensure athilio_spotify
 4. Reinicie o servidor.
 
 <Tip>
-  Configure o `ensure athilio_spotify` após as dependências do servidor para evitar carregamento prematuro.
+  Coloque `ensure athilio_spotify` após as dependências para evitar carregamento prematuro.
 </Tip>
 
 ## Licença
 
-O Athilio Spotify usa autenticação de licença para validar o resource durante a inicialização.
+A licença de uso deve ser informada em `athilio_spotify/license.json`.
 
-### Arquivo de licença
-
-A licença deve ser configurada em:
-
-`athilio_spotify/license.json`
-
-### Exemplo de arquivo
+### Exemplo
 
 ```json
 {
@@ -59,32 +47,30 @@ A licença deve ser configurada em:
 }
 ```
 
-### Como configurar
+### Passos
 
-1. Acesse o painel da Athilio Software.
-2. Copie sua licença oficial.
+1. Acesse o painel Athilio.
+2. Copie a licença ativa.
 3. Abra `athilio_spotify/license.json`.
 4. Cole a licença no campo `license`.
 5. Salve o arquivo.
 6. Reinicie o servidor.
 
 <Warning>
-  Nunca compartilhe sua licença publicamente. Compartilhamento, revenda ou uso em múltiplos servidores causa bloqueio automático.
+  Não compartilhe sua licença publicamente. Uso indevido em vários servidores pode resultar em bloqueio.
 </Warning>
 
 ### Verificação
 
-Após a inicialização do servidor, verifique o console por esta mensagem:
+No console, confirme a mensagem:
 
 `[Athilio Spotify] ✔ Licença validada com sucesso!`
-
-Se essa mensagem aparecer, a licença foi autenticada corretamente.
 
 ## Configuração por versão
 
 ### Versão 1.0.2
 
-Se você estiver usando a versão `1.0.2`, a configuração do programa é feita via `config.lua`.
+Nesta versão, a maioria das opções é configurada em `config.lua`.
 
 ```lua
 Config = {}
@@ -106,41 +92,25 @@ Config.PropPlacement = {0.26, -0.12, -0.10, 80.0, -160.0, 180.0}
 ```
 
 <Note>
-  Na versão 1.0.2, toda personalização do resource deve ser feita no arquivo `config.lua`. Faça backup antes de editar.
+  Faça backup antes de editar `config.lua`.
 </Note>
 
 ### Versões acima de 1.0.2
 
-Para versões mais recentes, todas as configurações são feitas diretamente pelo Dashboard da Athilio Software.
+Para versões mais recentes, as configurações são feitas pelo Dashboard Cloud.
 
-<Info>
-  O Anti-Spoofer integrado está disponível nas versões acima de 1.0.2 e funciona junto com o painel de administração.
-</Info>
+## Dashboard Cloud
 
-## Dashboard
+O Dashboard Cloud é o painel central para gerenciar:
 
-O Dashboard é o local central para:
-
-- gerenciar licença e IP autorizado
-- ajustar configurações do recurso
-- atualizar informações do servidor
-- visualizar histórico de validações
+- licença e IP autorizado
+- configurações do resource
+- histórico de validações
+- bloqueios e revogações
 
 <Warning>
-  A configuração do Dashboard só está disponível em versões recentes. Se a sua versão não mostrar a aba de configurações, use `config.lua` conforme a versão 1.0.2.
+  Se sua versão não exibir o painel, use `config.lua` conforme a versão 1.0.2.
 </Warning>
-
-## Recursos da interface
-
-- Interface moderna e responsiva
-- Sistema de animações configuráveis
-- Controle de volume integrado
-- Suporte a personalização visual
-- Compatibilidade com YouTube API
-- Prop customizado e animações de handheld
-- Integração standalone sem dependências externas
-
-![Dashboard Athilio Spotify](https://i.postimg.cc/DZ0qJyXg/image.png)
 
 ## Estrutura do resource
 
@@ -161,62 +131,47 @@ resources/
     └── README.md
 ```
 
-## Bloqueio por IP
+## Validação do resource
 
-O sistema valida o IP do servidor no momento da ativação.
+O resource valida a licença e o IP autorizado durante a inicialização.
 
-- IP autorizado deve estar correto no painel.
-- Migração de VPS ou mudança de IP exige redefinição.
-- Uso em múltiplos servidores sem autorização aciona bloqueio.
-
-<Warning>
-  Licenças usadas em mais de um servidor são bloqueadas automaticamente. Sempre use uma licença por servidor.
-</Warning>
+- IP autorizado deve estar configurado no painel.
+- Alteração de VPS ou IP exige atualização no painel.
+- Uso em múltiplos servidores sem autorização causa bloqueio.
 
 ## Problemas comuns
 
-### Licença inválida
+### `license.json` inválido
 
 Verifique:
 - licença copiada corretamente
-- espaços extras no arquivo
-- JSON formatado corretamente
-- IP autorizado no painel
+- formato JSON válido
+- ausência de espaços extras
+- campo `license` preenchido
 
-### Arquivo inválido
-
-O arquivo deve permanecer exatamente no formato:
-
-```json
-{
-  "license": "SUA_LICENSE_AQUI"
-}
-```
-
-### Recurso não inicia
+### `athilio_spotify` não carrega
 
 Verifique:
 - `ensure athilio_spotify` no `server.cfg`
 - nome da pasta `athilio_spotify`
-- dependências carregadas antes do recurso
+- dependências carregadas antes do resource
 - cache do FiveM limpo
 
-### Interface não abre
+### Dashboard não aparece
 
-Verifique:
-- pasta `html/` presente
-- arquivos `index.html`, `style.css`, `script.js`
-- erros no console `F8`
+- Confirme a versão do resource
+- Atualize para release mais recente
+- Use `config.lua` apenas em `1.0.2`
 
-## Suporte e contato
+## Suporte
 
 - Discord oficial: [discord.gg/Athilio](https://discord.gg/Athilio)
 - Site oficial: [athilio.com.br](https://athilio.com.br)
 
 <Tip>
-  Abra um ticket no Discord para validar sua licença ou solicitar suporte de instalação.
+  Abra um ticket no Discord para validar sua licença ou pedir suporte técnico.
 </Tip>
 
 <Note>
-  Cada licença é vinculada ao servidor. Revenda, compartilhamento ou uso não autorizado leva ao bloqueio da licença.
+  Cada licença é vinculada a um servidor autorizado. Revenda ou uso não autorizado pode resultar em bloqueio.
 </Note>
