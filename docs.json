@@ -11,13 +11,27 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Docs",
+        "tab": "Geral",
+        "groups": [
+          {
+            "group": "Introdução",
+            "pages": [
+              "index",
+              "termos",
+              "pagamentos",
+              "contato"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Resources",
         "groups": [
           {
             "group": "Athilio_Spotify",
             "pages": [
-              "index",
-              "athilio_spotify"
+              "athilio_spotify",
+              "anti-spoofer"
             ]
           }
         ]
@@ -50,7 +64,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
+      "label": "Painel",
       "href": "https://athilio.com.br/dashboard"
     }
   },
