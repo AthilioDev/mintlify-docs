@@ -22,5 +22,70 @@ ensure athilio_spotify
 
 ## Notas
 
-- Se o Dashboard Cloud estiver disponível, configure via painel; caso contrário, use `config.lua` conforme a versão do resource.
+- Se o Dashboard estiver disponível, prefira configurar pelo Dashboard; caso contrário, use `config.lua` conforme a versão do resource.
 - Faça backup antes de editar `config.lua`.
+
+## Instalação do BOT (serviço de integração Discord/FiveM)
+
+1. Prepare uma VPS ou servidor que será responsável por executar o bot.
+2. Copie os arquivos do bot para um diretório dedicado (ex.: `/opt/athilio-bot`).
+3. Defina variáveis de ambiente para credenciais (NUNCA salvar tokens em arquivos públicos):
+
+```bash
+export ATHILIO_BOT_TOKEN="<TOKEN_REDACTED>"
+export DB_HOST="<DB_HOST>"
+export DB_USER="<DB_USER>"
+export DB_PASSWORD="<DB_PASSWORD_REDACTED>"
+```
+
+4. Instale dependências (ex.: Node.js) e inicie o bot com `pm2` ou `systemd`.
+
+Exemplo `pm2`:
+
+```bash
+npm ci
+pm2 start dist/index.js --name athilio-bot --env production
+pm2 save
+```
+
+Exemplo `systemd` (arquivo `/etc/systemd/system/athilio-bot.service`):
+
+```ini
+[Unit]
+Description=Athilio Bot
+After=network.target
+
+[Service]
+Environment=ATHILIO_BOT_TOKEN=%ATHILIO_BOT_TOKEN%
+WorkingDirectory=/opt/athilio-bot
+ExecStart=/usr/bin/node dist/index.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+5. Habilite e inicie o serviço:
+
+```bash
+systemctl enable athilio-bot
+systemctl start athilio-bot
+```
+
+<Warning>
+  Não compartilhe seu token. Nunca poste o token do bot em canais públicos — trate-o como uma credencial secreta.
+</Warning>
+
+## Mensagens de erro comuns e soluções
+
+- Erro: `ECONNREFUSED` ao conectar ao MySQL → verifique `DB_HOST`, `DB_USER`, `DB_PASSWORD` e porta. Teste conexão com `mysql` client.
+- Erro: `Missing intents` ou `Invalid token` no Discord → verifique o token e as permissões (Gateway Intents) no portal do Discord.
+- Erro: `permission denied` ao criar arquivos → ajuste permissões do diretório e usuário do serviço.
+- Problema: bot não responde após deploy → verifique logs (`pm2 logs athilio-bot` ou `journalctl -u athilio-bot`) e reinicie o serviço.
+
+## Boas práticas
+
+- Sempre use variáveis de ambiente para segredos.
+- Mantenha backups do `config` e do DB antes de aplicar alterações.
+- Teste atualizações em ambiente staging antes de aplicar em produção.
+- Monitore logs e métricas do serviço (uptime, uso de memória, latência de respostas).

@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Athilio Software Docs",
   "colors": {
-    "primary": "#27ae60",
+    "primary": "#1e8449",
     "light": "#2ecc71",
-    "dark": "#1e8449"
+    "dark": "#145b36"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -79,7 +79,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Painel",
+      "label": "Dashboard",
       "href": "https://athilio.com.br/dashboard"
     }
   },
