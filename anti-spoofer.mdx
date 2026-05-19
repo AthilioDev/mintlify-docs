@@ -15,19 +15,35 @@ O Anti-Spoofer da Athilio Software é uma proteção integrada que funciona dire
 - Aplica banimento permanente para perfis comprometidos.
 - Permite revogações dinâmicas via nuvem.
 
-## Banimento por IP
+## Banimento por IP e proteção de servidor
 
 - O sistema valida o IP autorizado no painel.
-- Qualquer servidor não autorizado é bloqueado.
+- Qualquer servidor não autorizado é bloqueado imediatamente.
 - Mudança de VPS ou IP exige redefinição no painel.
 - Licenças usadas em múltiplos servidores são banidas.
 
-## Beta / Em breve
+## Proteção avançada e franquia de servidores
 
-O recurso de Anti-Spoofer está em evolução contínua e pode receber melhorias regulares.
+Se um servidor que usa o script for banido, o dono pode vincular uma franquia de servidores.
+
+Isso significa que:
+
+- banimentos em um servidor podem se estender a toda a franquia
+- tentativas de spoofing com HWID, Steam, Discord, whitelist ou IP são detectadas
+- o sistema banirá o perfil em todos os servidores vinculados
+- o usuário não consegue retornar por meio desse script
+
+### Tipos de ban detectados
+
+- HWID
+- Steam ID
+- Discord ID
+- whitelist (WL)
+- IP
+- assinaturas de rede e hardware
 
 <Warning>
-  O Anti-Spoofer atua em nível de infraestrutura. Interferir no sistema pode causar bloqueio definitivo do perfil.
+  Se o usuário tentar mudar HWID, Steam, Discord, WL ou IP para voltar, o sistema bloqueia o acesso por esse script.
 </Warning>
 
 ## Integração com painel admin
