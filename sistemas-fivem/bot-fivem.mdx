@@ -6,21 +6,20 @@ icon: 'robot'
 
 ## BOT FIVEM
 
-Esta página descreve o bot FiveM usado por servidores integrados ao painel. O bot é instalado por servidor — cada servidor tem seu próprio bot exclusivo — e oferece todas as funcionalidades definidas no arquivo de configuração (SQL, canais, whitelist, tickets, liberação, etc.).
+Visão geral
 
-<CardGroup cols={1}>
-<Card title="Visão geral" icon="info-circle">
-  - Configurável via arquivo (JSON) ou através do Dashboard (botões e formulários).
-  - Permite ligar, desligar e reiniciar o bot por servidor a partir do painel.
-  - Suporta personalizações e complementos pagos (ex.: módulos extras, temas, limites maiores).
-</Card>
-</CardGroup>
+Funcionalidades são habilitadas dinamicamente com base no `config` do servidor. Cada servidor opera com um bot isolado e configurável via Dashboard ou JSON.
 
----
+Arquitetura
 
-## Exemplo de configuração (sanitizado)
+- Per-server bot (instância por servidor)
+- Configuração centralizada no Dashboard com fallback para arquivo JSON local
+- Persistência em MySQL para whitelist, tickets e logs
+- Permissões baseadas em cargos do Discord e roles mapeadas no config
 
-> Atenção: valores sensíveis (senhas, tokens) foram ocultados no exemplo abaixo. No ambiente real, armazene senhas em variáveis de ambiente ou no painel com criptografia.
+Configuração
+
+Exemplo de configuração (production template)
 
 ```json
 {
@@ -33,95 +32,112 @@ Esta página descreve o bot FiveM usado por servidores integrados ao painel. O b
   },
 
   "channels": {
-    "welcome_channel": "<WELCOME_CHANNEL_ID>",
-    "exit_channel": "<EXIT_CHANNEL_ID>"
-  },
-
-  "atendimento": {
-    "category": "<ATENDIMENTO_CATEGORY_ID>",
-    "staff": "<STAFF_ROLE_ID>"
-  },
-
-  "idservidor": {
-    "id": "<SERVER_ID>",
-    "image": "<SERVER_IMAGE_URL>"
+    "welcome": "<CHANNEL_ID>",
+    "exit": "<CHANNEL_ID>",
+    "whitelist_submissions": "<CHANNEL_ID>",
+    "whitelist_results": "<CHANNEL_ID>",
+    "rename_channel": "<CHANNEL_ID>",
+    "ticket_category": "<CATEGORY_ID>"
   },
 
   "connect": {
-    "link": "<FIVEM_JOIN_LINK>",
-    "link2": "<STORE_URL>",
-    "link3": "<INSTAGRAM_URL>",
-    "link4": "<TIKTOK_URL>",
-    "players": "128",
-    "ipvps": "<VPS_IP:PORT>"
+    "join_url": "https://cfx.re/join/xxxxx",
+    "store_url": "https://store.example.com",
+    "socials": {
+      "instagram": "",
+      "tiktok": ""
+    },
+    "server": {
+      "max_players": 128,
+      "vps": "178.83.141.82:30120"
+    }
   },
 
-  "automatico": {
-    "authrole": "<AUTO_ROLE_ID>",
-    "automessage": "<AUTO_MESSAGE_CHANNEL_ID>"
+  "automatic": {
+    "auth_role": "<ROLE_ID>",
+    "auto_message_channel": "<CHANNEL_ID>",
+    "auto_message_interval_minutes": 60
+  },
+
+  "whitelist": {
+    "enabled": true,
+    "image_url": "<URL>",
+    "simultaneous": 50,
+    "category": "<CATEGORY_ID>",
+    "submission_channel": "<CHANNEL_ID>",
+    "result_channel": "<CHANNEL_ID>",
+    "staff_role": "<ROLE_ID>",
+    "waiting_role": "<ROLE_ID>",
+    "approved_role": "<ROLE_ID>",
+    "questions": [ /* array de objetos de pergunta (id, question, time, caracteres, history) */ ]
+  },
+
+  "liberation": {
+    "rename_channel": "<CHANNEL_ID>",
+    "submission_channel": "<CHANNEL_ID>",
+    "add_role": "<ROLE_ID>",
+    "remove_role": "<ROLE_ID>",
+    "table": "vrp_users",
+    "column": "whitelist",
+    "identifier": "id"
+  },
+
+  "ticket": {
+    "category": "<CATEGORY_ID>",
+    "staff_role": "<ROLE_ID>",
+    "table": "discord",
+    "categories": []
   }
 }
 ```
 
-O exemplo acima mostra os principais blocos. O bot também contém configurações completas de whitelist, tickets, categories de allowlist e módulo de liberação (rename/hex) — todos mapeados para canais, roles e tabelas do banco.
+Campos de configuração (resumo)
 
----
+Campo | Tipo | Descrição
+:--|:--|:--
+`sql.host` | string | Host do banco MySQL
+`sql.user` | string | Usuário do banco
+`sql.password` | string | Senha do banco (use env vars / painel)
+`channels.welcome` | string | Canal de boas-vindas (ID)
+`channels.exit` | string | Canal de logs de saída (ID)
+`connect.join_url` | string | Link para entrar no servidor FiveM
+`connect.server.vps` | string | IP:PORT da VPS do servidor
+`automatic.auth_role` | string | Role atribuída após verificação
+`whitelist.enabled` | boolean | Habilita fluxo de allowlist
+`whitelist.questions` | array | Perguntas configuráveis para allowlist
+`liberation.table` | string | Tabela no banco que será atualizada
 
-## Funções suportadas (mapeadas ao `config`)
+Checklist de implantação (Boas práticas)
 
-- **Banco de dados (sql)**: Conexão MySQL para persistência (whitelist, tickets, registros).
-- **Canais (channels)**: Canal de boas-vindas e log de saída para mensagens automáticas.
-- **Atendimento (atendimento)**: Cria calls/threads de suporte em uma categoria controlada por cargo staff.
-- **ID do servidor (idservidor)**: Identificador do servidor e imagem mostrada no painel.
-- **Conexão FiveM (connect)**: Links de entrada, loja e redes sociais; número máximo de players e IP:PORT para conexão.
-- **Automático (automatico)**: Role automática após verificação e canal de mensagens periódicas.
-- **Whitelist**: Formulário configurável com imagem, limites, canais, cargos e perguntas (pleno suporte a perguntas longas e histórico).
-- **Liberação (liberation)**: Fluxo para entregar/remover cargos e atualizar a tabela do jogo (ex.: `vrp_users`).
-- **Ticket**: Sistema de tickets com categorias pré-configuradas e registro em tabela.
+- Evitar chaves duplicadas no JSON (última sobrescreve).
+- Não comitar tokens/secretos: use variáveis de ambiente ou secret store.
+- Validar schema do config no startup (tipos, formatos de ID, URLs, limites).
+- Manter versionamento das alterações de config no Dashboard (audit log).
+- Fazer backup antes de aplicar mudanças em produção.
 
-> Observação: o bot executa todas as funções declaradas no config — se um campo estiver ausente, a funcionalidade relacionada ficará desabilitada.
+Segurança
 
----
+- Tokens nunca em arquivos versionados.
+- Permissões do Dashboard: limitar quem pode editar configs e reiniciar bots.
+- Sanitização de inputs vindos do Dashboard para evitar injeção.
 
-## Dashboard e edição
+Lifecycle do bot
 
-- **Edição via Dashboard**: Todos os campos essenciais podem ser alterados no painel — você pode editar valores manualmente (JSON) ou usar os botões/formulários disponíveis no Dashboard.
-- **Ações**: Ligar, reiniciar e parar o bot por servidor com um clique. Mudanças simples (ex.: texto de canais) aplicam-se imediatamente; alterações de esquema (ex.: mudança de tabela) podem requerer reinício.
-- **Per-server bot**: Cada servidor tem um bot exclusivo; configurações e limites são isolados por servidor.
-- **Customização paga**: Podemos habilitar opções de customização adicionais (temas, plugins, limites maiores) por valores extras; essas opções aparecem no painel de customização.
+- Startup: validação do config → conexão ao MySQL → registrar handlers.
+- Reload config: aceitar reload seguro sem reiniciar a instância quando possível.
+- Restart por servidor: ação suportada no Dashboard com logs de mudança.
 
----
+Observabilidade
 
-## Limpeza e recomendações (LIMPE OS ARQUIVOS)
+- Logs estruturados para eventos: whitelist, tickets, liberações, erros.
+- Métricas: conexões ativas, requisições de whitelist, tempo médio de aprovação.
+- Auditoria: quem alterou o config e quando (Dashboard).
 
-- **Remover chaves duplicadas**: No JSON exemplo que você forneceu havia chaves duplicadas (`allowlistcategories` apareceu duas vezes). JSON não aceita duas chaves iguais — a última sobrescreve as anteriores. Reúna todas as categorias em um único array.
-- **Sanitizar segredos**: Nunca comite senhas/keys no repositório. Use variáveis de ambiente ou segredo do painel.
-- **Validação**: Adicione validação do config no servidor (tipos, formatos de IDs, URLs, limites numéricos) para evitar comportamento inesperado.
-- **Backups de config**: Quando o Dashboard editar a config, mantenha versões e permit a restauração.
-
----
-
-## Imagens do sistema de verificação
+Imagens
 
 ![Captcha expulsa não verificados](https://i.postimg.cc/CKdXqXqw/image.png)
-
 ![Fluxo de verificação](https://i.postimg.cc/MTnng6f9/image.png)
 
-Essas imagens mostram o sistema de verificação com captcha que expulsa automaticamente usuários que não concluírem a verificação.
+Próximos passos
 
----
-
-## Exemplo rápido de fluxos
-
-- Ao entrar: o bot envia a mensagem de boas-vindas no `welcome_channel` e inicia a verificação captcha.
-- Verificação: usuário completa captcha → recebe `authrole` automaticamente.
-- Whitelist: usuário preenche formulário; staff recebe notificação no canal configurado e aprova/reprova.
-- Ticket: usuário abre ticket; um canal temporário é criado na categoria `ticket.category` e notifica cargos `ticket.staff`.
-
----
-
-Se quiser, eu posso:
-- Mesclar/limpar o `config` original que você enviou (remover duplicatas e ocultar segredos) e salvar um `config.example.json` limpo.
-- Adicionar exemplos de como configurar variáveis de ambiente e instruções de deploy.
-
-Quer que eu faça a limpeza do `config` original agora e crie o `config.example.json`? 
+- Posso gerar um `config.example.json` com esse template e validar o JSON original que você enviou (remover duplicatas e padronizar campos). Deseja que eu gere o arquivo agora?

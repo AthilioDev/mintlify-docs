@@ -1,43 +1,18 @@
 ---
-title: "Athilio Spotify"
-description: "Documentação oficial do Athilio Spotify: instalação, licença, dashboard e proteção"
+title: "Configuração"
+description: "Configuração do Athilio Spotify: licença, dashboard e proteções"
 icon: 'music'
 ---
 
-# Athilio Spotify
+# Configuração do Athilio Spotify
 
-`athilio_spotify` é o resource de música para FiveM que utiliza licença e painel centralizado para validação e configuração.
+`athilio_spotify` é o resource de música para FiveM com gerenciamento via Dashboard Cloud.
 
-<Info>
-  Este guia cobre instalação, licença, Dashboard Cloud e problemas de implantação.
-</Info>
-
-## Requisitos
-
-- FiveM atualizado
-- pasta `resources/` disponível no servidor
-- `oxmysql` instalado quando necessário
-- licença ativa no painel Athilio
-
-## Instalação
-
-1. Extraia `athilio_spotify` para `resources/`
-2. Confirme que a pasta está nomeada `athilio_spotify`
-3. Adicione no `server.cfg`:
-
-```cfg
-ensure athilio_spotify
-```
-
-4. Reinicie o servidor.
-
-<Tip>
-  Coloque `ensure athilio_spotify` após as dependências para evitar carregamento prematuro.
-</Tip>
+> Instalação e passos de deploy foram movidos para a página **Instalação**. Consulte [Instalação](instalacao.mdx) para instruções passo a passo.
 
 ## Licença
 
-A licença de uso deve ser informada em `athilio_spotify/license.json`.
+O arquivo `athilio_spotify/license.json` deve conter a licença ativa.
 
 ### Exemplo
 
@@ -47,34 +22,24 @@ A licença de uso deve ser informada em `athilio_spotify/license.json`.
 }
 ```
 
-### Passos
+### Passos rápidos
 
-1. Acesse o painel Athilio.
-2. Copie a licença ativa.
-3. Abra `athilio_spotify/license.json`.
-4. Cole a licença no campo `license`.
-5. Salve o arquivo.
-6. Reinicie o servidor.
+1. Acesse o painel Athilio e copie a licença ativa.
+2. Cole em `athilio_spotify/license.json` no campo `license`.
+3. Reinicie o servidor.
 
 <Warning>
   Não compartilhe sua licença publicamente. Uso indevido em vários servidores pode resultar em bloqueio.
 </Warning>
 
-### Verificação
-
-No console, confirme a mensagem:
-
-`[Athilio Spotify] ✔ Licença validada com sucesso!`
-
 ## Configuração por versão
 
 ### Versão 1.0.2
 
-Nesta versão, a maioria das opções é configurada em `config.lua`.
+Opções principais são configuradas em `config.lua`.
 
 ```lua
 Config = {}
-
 Config.License = ""
 Config.ServerName = "Core Studios Fy"
 Config.HexColor = "27ae60"
@@ -91,17 +56,13 @@ Config.PropBone = 57005
 Config.PropPlacement = {0.26, -0.12, -0.10, 80.0, -160.0, 180.0}
 ```
 
-<Note>
-  Faça backup antes de editar `config.lua`.
-</Note>
-
 ### Versões acima de 1.0.2
 
-Para versões mais recentes, as configurações são feitas pelo Dashboard Cloud.
+Configurações são gerenciadas via Dashboard Cloud.
 
 ## Dashboard Cloud
 
-O Dashboard Cloud é o painel central para gerenciar:
+O Dashboard gerencia:
 
 - licença e IP autorizado
 - configurações do resource
@@ -109,7 +70,7 @@ O Dashboard Cloud é o painel central para gerenciar:
 - bloqueios e revogações
 
 <Warning>
-  Se sua versão não exibir o painel, use `config.lua` conforme a versão 1.0.2.
+  Se o painel não estiver disponível, use `config.lua` para configuração local.
 </Warning>
 
 ## Estrutura do resource
@@ -131,37 +92,10 @@ resources/
     └── README.md
 ```
 
-## Validação do resource
+## Validação e problemas comuns
 
-O resource valida a licença e o IP autorizado durante a inicialização.
-
-- IP autorizado deve estar configurado no painel.
-- Alteração de VPS ou IP exige atualização no painel.
-- Uso em múltiplos servidores sem autorização causa bloqueio.
-
-## Problemas comuns
-
-### `license.json` inválido
-
-Verifique:
-- licença copiada corretamente
-- formato JSON válido
-- ausência de espaços extras
-- campo `license` preenchido
-
-### `athilio_spotify` não carrega
-
-Verifique:
-- `ensure athilio_spotify` no `server.cfg`
-- nome da pasta `athilio_spotify`
-- dependências carregadas antes do resource
-- cache do FiveM limpo
-
-### Dashboard não aparece
-
-- Confirme a versão do resource
-- Atualize para release mais recente
-- Use `config.lua` apenas em `1.0.2`
+- Verifique `license.json`, `server.cfg` e dependências.
+- Limpe o cache do FiveM após alterações significativas.
 
 ## Suporte
 
@@ -171,7 +105,3 @@ Verifique:
 <Tip>
   Abra um ticket no Discord para validar sua licença ou pedir suporte técnico.
 </Tip>
-
-<Note>
-  Cada licença é vinculada a um servidor autorizado. Revenda ou uso não autorizado pode resultar em bloqueio.
-</Note>

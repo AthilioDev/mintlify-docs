@@ -1,0 +1,26 @@
+---
+title: "Instalação"
+description: "Passo a passo para instalar o resource Athilio Spotify"
+icon: 'download'
+---
+
+## Instalação do Athilio Spotify
+
+1. Extraia `athilio_spotify` para `resources/`
+2. Confirme que a pasta esteja nomeada `athilio_spotify`
+3. Adicione a linha abaixo no `server.cfg`:
+
+```cfg
+ensure athilio_spotify
+```
+
+4. Reinicie o servidor.
+
+<Tip>
+  Coloque `ensure athilio_spotify` após as dependências para evitar carregamento prematuro.
+</Tip>
+
+## Notas
+
+- Se o Dashboard Cloud estiver disponível, configure via painel; caso contrário, use `config.lua` conforme a versão do resource.
+- Faça backup antes de editar `config.lua`.

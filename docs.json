@@ -28,7 +28,7 @@
         ]
       },
       {
-        "tab": "Resources",
+        "tab": "Spotify",
         "groups": [
           {
             "group": "Athilio Spotify",
@@ -41,7 +41,7 @@
       }
       ,
       {
-        "tab": "Sistemas FiveM",
+        "tab": "Aplicações",
         "groups": [
           {
             "group": "Bots",
